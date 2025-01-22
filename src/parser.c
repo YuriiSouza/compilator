@@ -1,12 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "parser.h"
+#include "include/parser.h"
 
 // Funções auxiliares
-extern Token* tokens;             // Tokens do lexer
-extern int current_token_index;   // Índice do token atual
-
 Token* get_current_token() {
     return &tokens[current_token_index];
 }
@@ -51,9 +48,9 @@ ASTNode* parse_statement() {
     Token* current_token = get_current_token();
 
     if (current_token->type == TOKEN_KEYWORD) {
-        if (strcmp(current_token->value, "int") == 0 || 
-            strcmp(current_token->value, "float") == 0 || 
-            strcmp(current_token->value, "string") == 0) {
+        if (strcmp(current_token->value, "inteiro") == 0 || 
+            strcmp(current_token->value, "flutuante") == 0 || 
+            strcmp(current_token->value, "letra") == 0) {
             // Declaração de variável
             return parse_declaration();
         } else if (strcmp(current_token->value, "return") == 0) {

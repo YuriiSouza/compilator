@@ -1,6 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "parser.h"
 //Definindo o tipo TokenType
 typedef enum {
   TOKEN_KEYWORD, //Palavras-chave
@@ -16,6 +17,10 @@ typedef struct {
   char* value;
 } Token;
 
+extern Token* tokens;
+extern int current_token_index;
+
 Token* lexer(const char* source_code);
 
-#endif // LEXER_H
+
+#endif// LEXER_H

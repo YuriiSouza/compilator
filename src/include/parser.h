@@ -24,7 +24,7 @@ typedef struct ASTNode {
 } ASTNode;
 
 ASTNode* parse_program();
-ASTNode* parse_statament();
+ASTNode* parse_statement();
 ASTNode* parse_declaration();
 ASTNode* parse_assignment();
 ASTNode* parse_return();
@@ -32,6 +32,4 @@ ASTNode* parse_expression();
 ASTNode* parse_term();
 ASTNode* parse_factor();
 
-extern Token* tokens; //Tokens gerados pelo lexer
-extern int current_token_index; //Indice do token atual
 #endif

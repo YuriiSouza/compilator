@@ -4,6 +4,10 @@
 #include <ctype.h>
 #include "./include/lexer.h"
 
+// Definição dos globais
+Token* tokens = NULL;             // Definição real do array de tokens
+int current_token_index = 0;      // Definição real do índice atual
+
 //Função para verificar se uma palavra é uma palavra-chave
 int is_keyword(const char* word) {
   const char *keywords[] = {
@@ -21,7 +25,7 @@ int is_keyword(const char* word) {
 
 //Funcao principal lexer
 Token* lexer(const char *source_code) {
-  Token *tokens = malloc(1024 * sizeof(Token));
+  tokens = malloc(1024 * sizeof(Token));
   int token_count = 0;
 
   for (int i = 0; source_code[i] != '\0';) {
