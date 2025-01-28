@@ -25,7 +25,7 @@ typedef struct {
 
 //Funcoes para a tabela de simbolos
 SymbolTable *create_symbol_table();
-Symbol *lookup(SymbolTable *table, char *name, VariableType type);
+Symbol *lookup(SymbolTable *table, const char *name);
 void insert(SymbolTable *table, const char *name, VariableType type);
 void check_declaration(SymbolTable *table, const char *name);
 void check_type(SymbolTable *table, const char *name, VariableType expect_type);

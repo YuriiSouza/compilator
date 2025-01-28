@@ -1,9 +1,9 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "lexer.h" //icluindo o arquivo lexer.h
+#include "lexer.h" // Incluindo o arquivo lexer.h
 
-//definindo os tipos de nos de arvore sintatica abstrata (AST)
+// Definindo os tipos de nós da árvore sintática abstrata (AST)
 typedef enum {
   NODE_PROGRAM,
   NODE_DECLARATION,
@@ -16,13 +16,16 @@ typedef enum {
   NODE_NUMBER,
 } NodeType;
 
+// Estrutura de um nó da AST
 typedef struct ASTNode {
-  NodeType type;
-  struct ASTNode* left;
-  struct ASTNode* right;
-  char* value;
+  NodeType type;               // Tipo do nó
+  struct ASTNode* left;        // Filho esquerdo
+  struct ASTNode* right;       // Filho direito
+  char* value;                 // Valor associado ao nó (e.g., identificadores, números, operadores)
+  char* temp;                  // Identificador temporário para código intermediário
 } ASTNode;
 
+// Declarações de funções de parsing
 ASTNode* parse_program();
 ASTNode* parse_statement();
 ASTNode* parse_declaration();

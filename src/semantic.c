@@ -62,7 +62,6 @@ void check_type(SymbolTable *table, const char *name, VariableType expected_type
         exit(1);
     }
 }
-
 // Função principal de análise semântica
 void semantic_analysis(ASTNode *node, SymbolTable *table) {
     if (!node) return;

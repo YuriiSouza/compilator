@@ -16,6 +16,21 @@ int match(TokenType type) {
     return get_current_token()->type == type;
 }
 
+const char* node_type_to_string(NodeType type) {
+    switch (type) {
+        case NODE_PROGRAM: return "NODE_PROGRAM";
+        case NODE_DECLARATION: return "NODE_DECLARATION";
+        case NODE_ASSIGNMENT: return "NODE_ASSIGNMENT";
+        case NODE_RETURN: return "NODE_RETURN";
+        case NODE_EXPRESSION: return "NODE_EXPRESSION";
+        case NODE_TERM: return "NODE_TERM";
+        case NODE_FACTOR: return "NODE_FACTOR";
+        case NODE_IDENTIFIER: return "NODE_IDENTIFIER";
+        case NODE_NUMBER: return "NODE_NUMBER";
+        default: return "UNKNOWN_NODE";
+    }
+}
+
 // Função para criar um novo nó da árvore sintática (AST)
 ASTNode* create_node(NodeType type, char* value) {
     ASTNode* node = malloc(sizeof(ASTNode));
@@ -23,6 +38,16 @@ ASTNode* create_node(NodeType type, char* value) {
     node->left = NULL;
     node->right = NULL;
     node->value = value ? strdup(value) : NULL;
+ // Imprime o tipo do nó de forma legível
+    printf("Node type: %s\n", node_type_to_string(node->type));
+
+    // Verifica se o valor do nó é NULL antes de imprimir
+    if (node->value) {
+        printf("Node value: %s\n", node->value);
+    } else {
+        printf("Node value: NULL\n");
+    }
+    
     return node;
 }
 
@@ -98,9 +123,20 @@ ASTNode* parse_return() {
 
 // Função de parser para uma declaração
 ASTNode* parse_declaration() {
-    consume();  // Consumir a palavra-chave 'int' ou 'float'
+    Token *type_token = get_current_token();  // Obter o tipo (inteiro, flutuante)
+    if (!match(TOKEN_KEYWORD)) {
+        fprintf(stderr, "Erro: Esperado tipo (inteiro, flutuante)\n");
+        exit(1);
+    }
     
+    consume();  // Consumir a palavra-chave 'inteiro' ou 'flutuante'
+
     Token *identifier_token = get_current_token();
+    if (!match(TOKEN_IDENTIFIER)) {
+        fprintf(stderr, "Erro: Esperado identificador\n");
+        exit(1);
+    }
+
     consume();  // Consumir o identificador
 
     if (match(TOKEN_SYMBOL) && strcmp(get_current_token()->value, ";") == 0) {
@@ -190,20 +226,4 @@ ASTNode* parse_factor() {
 
     fprintf(stderr, "Erro: Esperado número ou identificador\n");
     exit(1);
-}
-
-int main() {
-    // Exemplo de código-fonte a ser analisado
-    const char *source_code = "int x; x = 42; return x;";
-    
-    // Gerando tokens com o lexer
-    Token *tokens = lexer(source_code);
-    current_token_index = 0;
-
-    // Analisando o programa com o parser
-    ASTNode *program = parse_program();
-
-    printf("Árvore sintática criada com sucesso!\n");
-
-    return 0;
 }
