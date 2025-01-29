@@ -1,7 +1,9 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "include/parser.h"
+
 
 // Funções auxiliares
 Token* get_current_token() {
@@ -31,6 +33,26 @@ const char* node_type_to_string(NodeType type) {
     }
 }
 
+void print_ast_node(ASTNode* node, int depth) {
+    if (node == NULL) return;
+
+    // Print indentation
+    for (int i = 0; i < depth; i++) {
+        printf("  ");
+    }
+
+    // Print node type and value
+    printf("%s", node_type_to_string(node->type));
+    if (node->value) {
+        printf(" (%s)", node->value);
+    }
+    printf("\n");
+
+    // Recursively print left and right children
+    print_ast_node(node->left, depth + 1);
+    print_ast_node(node->right, depth + 1);
+}
+
 // Função para criar um novo nó da árvore sintática (AST)
 ASTNode* create_node(NodeType type, char* value) {
     ASTNode* node = malloc(sizeof(ASTNode));
@@ -38,15 +60,10 @@ ASTNode* create_node(NodeType type, char* value) {
     node->left = NULL;
     node->right = NULL;
     node->value = value ? strdup(value) : NULL;
- // Imprime o tipo do nó de forma legível
-    printf("Node type: %s\n", node_type_to_string(node->type));
-
-    // Verifica se o valor do nó é NULL antes de imprimir
-    if (node->value) {
-        printf("Node value: %s\n", node->value);
-    } else {
-        printf("Node value: NULL\n");
-    }
+    
+    // Print the node as it's created
+    // printf("Created node: ");
+    // print_ast_node(node, 0);
     
     return node;
 }
@@ -64,8 +81,13 @@ ASTNode* parse_program() {
             last_node->right = stmt;
         }
         last_node = stmt;
+
+        // Adicione uma depuração para verificar os tipos de nó
+        printf("DEBUG: Adicionando nó do tipo %d ao programa\n", stmt->type);
     }
 
+    printf("\nFinal AST:\n");
+    print_ast_node(program, 0);
     return program;
 }
 
