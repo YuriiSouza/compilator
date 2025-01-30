@@ -83,11 +83,11 @@ ASTNode* parse_program() {
         last_node = stmt;
 
         // Adicione uma depuração para verificar os tipos de nó
-        printf("DEBUG: Adicionando nó do tipo %d ao programa\n", stmt->type);
+        // printf("DEBUG: Adicionando nó do tipo %d ao programa\n", stmt->type);
     }
 
-    printf("\nFinal AST:\n");
-    print_ast_node(program, 0);
+    // printf("\nFinal AST:\n");
+    // print_ast_node(program, 0);
     return program;
 }
 
@@ -103,7 +103,7 @@ ASTNode* parse_statement() {
         } else if (strcmp(current_token->value, "return") == 0) {
             // Instrução de retorno
             return parse_return();
-        }
+        } 
     }
 
     if (current_token->type == TOKEN_IDENTIFIER) {
@@ -147,7 +147,7 @@ ASTNode* parse_return() {
 ASTNode* parse_declaration() {
     Token *type_token = get_current_token();  // Obter o tipo (inteiro, flutuante)
     if (!match(TOKEN_KEYWORD)) {
-        fprintf(stderr, "Erro: Esperado tipo (inteiro, flutuante)\n");
+        fprintf(stderr, "Erro: Esperado tipo (inteiro, flutuante)\nc");
         exit(1);
     }
     

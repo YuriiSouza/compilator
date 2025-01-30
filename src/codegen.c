@@ -59,13 +59,14 @@ void add_instruction(CodeGenerator* cg, const char* op, const char* arg1, const 
 void generate_intermediate_code(ASTNode* root, CodeGenerator* cg) {
     if (!root) return;
 
-    printf("DEBUG: Processing node type %d\n", root->type);  // Adicione essa linha para verificar o tipo do nó
+    // printf("DEBUG: Processing node type %d\n", root->type);  // Adicione essa linha para verificar o tipo do nó
 
     char temp[16];
     switch (root->type) {
         case NODE_PROGRAM:
             generate_intermediate_code(root->right, cg);
             generate_intermediate_code(root->left, cg);
+            
             break;
 
         case NODE_DECLARATION:
@@ -73,16 +74,14 @@ void generate_intermediate_code(ASTNode* root, CodeGenerator* cg) {
             sprintf(temp, "t%d", cg->count++);
             add_instruction(cg, "DECL", root->value, NULL, temp);
             root->temp = strdup(temp);
+
+            generate_intermediate_code(root->right, cg);
+            generate_intermediate_code(root->left, cg);
             break;
 
         case NODE_ASSIGNMENT:
-            if (root->right == NULL) {
-                printf("DEBUG: root->right é NULL\n");
-            } else {
-                printf("DEBUG: root->right está sendo processado\n");
-            }
-            generate_intermediate_code(root->right, cg);
-            add_instruction(cg, "MOV", root->right->temp, NULL, root->left->value);
+            generate_intermediate_code(root->left, cg);
+            add_instruction(cg, "MOV", root->value, NULL, root->left->temp);
             break;
 
         case NODE_RETURN:
@@ -128,8 +127,8 @@ void generate_intermediate_code(ASTNode* root, CodeGenerator* cg) {
         default:
             break;
     }
-}
 
+}
 // Imprime o código intermediário
 void print_intermediate_code(CodeGenerator* cg) {
     for (int i = 0; i < cg->count; i++) {
@@ -154,10 +153,10 @@ void generate_assembly_code(CodeGenerator* cg, const char* output_file) {
       return;
     }
 
-    // fprintf(out, "section .data\n");
-    // fprintf(out, "section .bss\n");
-    // fprintf(out, "section .text\n");
-    // fprintf(out, "global _start\n");
+    fprintf(out, "section .data\n");
+    fprintf(out, "section .bss\n");
+    fprintf(out, "section .text\n");
+    fprintf(out, "global _start\n");
 
     fprintf(out, "_start:\n");
     for (int i = 0; i < cg->count; i++) {
@@ -199,9 +198,9 @@ void generate_assembly_code(CodeGenerator* cg, const char* output_file) {
         }
     }
 
-    // fprintf(out, "    mov eax, 1\n");
-    // fprintf(out, "    xor ebx, ebx\n");
-    // fprintf(out, "    int 0x80\n");
+    fprintf(out, "    mov eax, 1\n");
+    fprintf(out, "    xor ebx, ebx\n");
+    fprintf(out, "    int 0x80\n");
 
     fclose(out);
     printf("Código Assembly gerado em: %s\n", output_file);

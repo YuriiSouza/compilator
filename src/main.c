@@ -8,7 +8,7 @@
 
 int main() {
     // Código de entrada (substitua isso por leitura de arquivo, se necessário)
-    char* source_code = "inteiro a;a = 5;return 0;";
+    char* source_code = "inteiro a;a = 5;";
     // 1. Lexer: Geração de tokens
     Token* tokens = lexer(source_code);
 
@@ -22,15 +22,8 @@ int main() {
 
     // 4. Gerador de Código Intermediário
     CodeGenerator* cg = create_codegen();
-    // print_codegen_node(cg);
-    // printf("\n\n");
     generate_intermediate_code(ast, cg);
-    // print_codegen_node(cg);
-    // printf("\n\n");
-    // print_intermediate_code(cg);
-    // printf("\n\n");
-    // print_codegen_node(cg);
-    // printf("\n\n");
+    print_codegen_node(cg);
 
     // 5. Otimização de Código
     // optimize_code(cg);
@@ -39,11 +32,11 @@ int main() {
     const char* output_file = "output.s";
     generate_assembly_code(cg, output_file);
 
-    // printf("\n\n");
+    printf("\n\n");
 
     // // 7. Exibição do código intermediário (opcional)
-    // printf("Código Intermediário:\n");
-    // print_intermediate_code(cg);
+    printf("Código Intermediário:\n");
+    print_intermediate_code(cg);
 
     // printf("Código final gerado em: %s\n", output_file);
 

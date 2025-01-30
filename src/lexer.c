@@ -72,7 +72,6 @@ Token* lexer(const char *source_code) {
       }
       token.value = strdup(buffer);
       tokens[token_count++] = token;
-
       continue;
     }
 
@@ -91,7 +90,6 @@ Token* lexer(const char *source_code) {
       token.value = strdup(buffer);
       tokens[token_count++] = token;
       continue;
-
     }
 
     //operadores
